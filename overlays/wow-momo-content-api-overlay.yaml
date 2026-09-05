@@ -1,0 +1,78 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for WOW! Momo Content API
+  version: 1.0.0
+extends: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+x-generated: '2026-09-04'
+x-method: generated
+x-note: >-
+  Captures API Evangelist's observations about this contract without mutating it. The target document is
+  itself derived from the provider's live route-discovery response and per-route OPTIONS schema
+  documents; this overlay is the only place our own judgement is recorded.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/wow-momo/
+    x-apievangelist-posture: no-product-api
+    x-apievangelist-note: >-
+      A restaurant chain's marketing-site content API, not a commercial developer product. No portal,
+      reference, SDK, API pricing or developer support channel exists.
+    x-apievangelist-sibling-surface: >-
+      api.wowmomo.com serves the Wow Eats consumer ordering app and answers every anonymous request,
+      including a control path that cannot exist, with HTTP 200 {"message":"NO_AUTH"}.
+- target: $.info
+  update:
+    x-idempotency: none
+    x-rate-limit-signal: none
+    x-error-format: wordpress-rest (not RFC 9457)
+    x-reversibility: na (read-only public surface)
+    x-dry-run: none
+- target: $.servers[0]
+  update:
+    x-anonymous-read: true
+    x-observed: '2026-09-04'
+    x-server-software: Apache with mod_security in front; a truncated User-Agent is answered with HTTP 406
+- target: $.paths['/wp/v2/pages'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 6
+    x-collection-size-source: x-wp-total response header, observed 2026-09-04
+- target: $.paths['/wp/v2/media'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 98
+    x-collection-size-source: x-wp-total response header, observed 2026-09-04
+- target: $.paths['/wp/v2/categories'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 5
+    x-collection-size-source: x-wp-total response header, observed 2026-09-04
+- target: $.paths['/wp/v2/tags'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 15
+    x-collection-size-source: x-wp-total response header, observed 2026-09-04
+- target: $.paths['/wp/v2/users'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 1
+    x-note: >-
+      A single shared editorial account, `webadmin`. Anonymous read of the author collection is enabled
+      on this install; it is disabled by default on many WordPress hosts.
+- target: $.paths['/wp/v2/search'].get
+  update:
+    x-anonymous: true
+    x-collection-size: 7
+    x-note: The only operation that crosses post-type boundaries.
+- target: $.paths['/yoast/v1/get_head'].get
+  update:
+    x-anonymous: true
+    x-note: >-
+      The only anonymously readable route in the yoast/v1 namespace; every other route in it is
+      administrative and returns 401.
+- target: $.paths['/']
+  update:
+    x-note: >-
+      The route index declares 396 routes across 36 namespaces. This contract describes only the 20
+      operations confirmed to answer anonymously; everything else on the install is administrative and
+      gated.

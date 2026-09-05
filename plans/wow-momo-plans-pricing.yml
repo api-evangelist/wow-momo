@@ -1,0 +1,23 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://www.wowmomo.com/ and its complete 6-page sitemap, plus https://api.wowmomo.com/, probed
+  2026-09-04
+note: >-
+  WOW! Momo publishes no API plans, tiers, quotas or pricing of any kind — there is no API product to
+  price. The company's public pricing is menu pricing for food, sold through its outlets and through
+  Swiggy and Zomato, and its franchise page is a lead form with no published fee schedule. The content
+  API is free and anonymous with no registration; the application backend is credential-gated with no
+  published access path. plan_count is 0 as a measured fact, not an omission.
+plan_count: 0
+plans: []
+free_tier:
+  available: true
+  note: >-
+    Not a plan the company offers, but a property of the surface: the WordPress content API at
+    https://www.wowmomo.com/wp-json is readable anonymously with no key, no registration and no terms of
+    use specific to the API. The site's general Terms & Conditions
+    (https://www.wowmomo.com/terms-conditions/) are the only governing document.
+enterprise_gate: false
+signup_url: null
+pricing_url: null

@@ -1,0 +1,114 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  live error responses observed on https://www.wowmomo.com/wp-json/ and https://api.wowmomo.com/ on
+  2026-09-04, cross-checked against openapi/_ae-authored/wow-momo-content-api-openapi.yml
+note: >-
+  WOW! Momo publishes no error reference. Every entry below is a response body captured verbatim from
+  the live surface on 2026-09-04. Remediation text is written by API Evangelist from the observed
+  behaviour, and is marked as such.
+format: wordpress-rest
+rfc9457: false
+media_type: application/json
+envelope:
+  code: Machine-readable error slug.
+  message: Human-readable message. Localised to the site language.
+  data.status: HTTP status, repeated inside the body.
+  data.params: Present on validation errors — a map of parameter name to the reason it failed.
+  data.details: Present on validation errors — per-parameter {code, message, data} detail objects.
+problem_types:
+- code: rest_no_route
+  status: 404
+  title: No route matched
+  observed_message: No route was found matching the URL and request method.
+  observed_at: GET /wp-json/wp/v2/nope
+  remediation: >-
+    Read the route table from GET /wp-json/ before calling. This install declares 396 routes across 36
+    namespaces and most of them are not the ones an integrator wants.
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  observed_message: Invalid post ID.
+  observed_at: GET /wp-json/wp/v2/pages/999999 and GET /wp-json/wp/v2/media/99999
+  remediation: >-
+    The id does not exist, or exists in a status the anonymous caller cannot see. List the collection
+    first; there are only 6 published pages and 98 media items on this install.
+- code: rest_term_invalid
+  status: 404
+  title: Term does not exist
+  observed_message: Term does not exist.
+  observed_at: GET /wp-json/wp/v2/categories/99999
+  remediation: Enumerate the 5 categories or 15 tags rather than guessing term ids.
+- code: rest_user_invalid_id
+  status: 404
+  title: Invalid user ID
+  observed_message: Invalid user ID.
+  observed_at: GET /wp-json/wp/v2/users/99999
+  remediation: One author record exists on this install.
+- code: rest_type_invalid
+  status: 404
+  title: Invalid post type
+  observed_message: Invalid post type.
+  observed_at: GET /wp-json/wp/v2/types/nope
+  remediation: Read GET /wp-json/wp/v2/types for the registered post-type slugs.
+- code: rest_taxonomy_invalid
+  status: 404
+  title: Invalid taxonomy
+  observed_message: Invalid taxonomy.
+  observed_at: GET /wp-json/wp/v2/taxonomies/nope
+  remediation: Read GET /wp-json/wp/v2/taxonomies for the registered taxonomy slugs.
+- code: rest_status_invalid
+  status: 404
+  title: Invalid status
+  observed_message: Invalid status.
+  observed_at: GET /wp-json/wp/v2/statuses/nope
+  remediation: Read GET /wp-json/wp/v2/statuses for the registered status slugs.
+- code: oembed_invalid_url
+  status: 404
+  title: URL is not embeddable here
+  observed_message: Not Found
+  observed_at: GET /wp-json/oembed/1.0/embed?url=https://example.com/
+  remediation: >-
+    The oEmbed provider only answers for URLs on www.wowmomo.com. Note the message is the bare string
+    "Not Found" — the `code` is the only useful discriminator.
+- code: rest_invalid_param
+  status: 400
+  title: Parameter failed validation
+  observed_message: 'Invalid parameter(s): per_page'
+  observed_at: GET /wp-json/wp/v2/pages?per_page=500 and ?orderby=bogus
+  remediation: >-
+    Read data.details.<param>.message — it states the accepted range or enum verbatim, e.g. "per_page
+    must be between 1 (inclusive) and 100 (inclusive)" and the full allowed orderby list. This is the
+    most useful error on the surface; do not discard the body.
+- code: rest_missing_callback_param
+  status: 400
+  title: Required parameter missing
+  observed_message: 'Missing parameter(s): url'
+  observed_at: GET /wp-json/yoast/v1/get_head
+  remediation: data.params is an array of the missing parameter names.
+- code: rest_forbidden
+  status: 401
+  title: Not permitted
+  observed_message: Sorry, you are not allowed to do that.
+  observed_at: GET /wp-json/wp/v2/settings and /wp-json/wp-abilities/v1/abilities
+  remediation: >-
+    Administrative route. Requires a WordPress application password or an authenticated wp-admin
+    session; neither is obtainable by a third party. Related, more specific variants observed:
+    rest_cannot_view (menus), rest_cannot_view_plugins, rest_cannot_view_themes,
+    rest_block_type_cannot_view.
+- code: wpcf7_forbidden
+  status: 403
+  title: Contact forms not accessible
+  observed_message: You are not allowed to access contact forms.
+  observed_at: GET /wp-json/contact-form-7/v1/contact-forms
+  remediation: Plugin-specific gate on the Contact Form 7 namespace.
+- code: NO_AUTH
+  status: 200
+  title: Application backend auth gate
+  observed_message: '{"data":null,"message":"NO_AUTH","messageType":"FAILED"}'
+  observed_at: every path probed on https://api.wowmomo.com/, including a control path that cannot exist
+  remediation: >-
+    This is the one error on the estate an agent must special-case. api.wowmomo.com returns HTTP 200 —
+    not 401 — for authentication failures, so status-code-based error handling will read a rejected call
+    as a success with a null payload. Callers must inspect messageType ("FAILED") and message
+    ("NO_AUTH"). No credential issuance path is published.

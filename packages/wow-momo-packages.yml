@@ -1,0 +1,54 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  registry.npmjs.org (name lookups and full-text search), pypi.org, and a web search for a WOW! Momo
+  GitHub organisation or SDK, all on 2026-09-04
+note: >-
+  WOW! Momo publishes no client library on any registry. No SDKs pointer is emitted, because there is no
+  first-party SDK to point at.
+package_count: 0
+official_package_count: 0
+packages: []
+searched:
+- registry: npm
+  query: wowmomo
+  result: 404 Not found
+  version: null
+  published: null
+- registry: npm
+  query: wow-momo
+  result: 404 Not found
+  version: null
+  published: null
+- registry: npm
+  query: woweats
+  result: 404 Not found
+  version: null
+  published: null
+- registry: npm
+  query: full-text search "wowmomo"
+  result: zero objects returned
+  version: null
+  published: null
+- registry: pypi
+  query: wowmomo
+  result: HTTP 404
+  version: null
+  published: null
+- registry: pypi
+  query: wow-momo
+  result: HTTP 404
+  version: null
+  published: null
+- registry: pypi
+  query: woweats
+  result: HTTP 404
+  version: null
+  published: null
+distribution:
+  github_organisation: null
+  note: >-
+    No WOW! Momo GitHub organisation was found. The consumer app (com.wowmomo.woweats on Google Play,
+    and Wow Eats on the App Store) is a distributed binary, not a package a developer can depend on, and
+    it was built for WOW! Momo by an outside agency (BlueHorse Software). There is nothing here for a
+    consumer to pin a version of.

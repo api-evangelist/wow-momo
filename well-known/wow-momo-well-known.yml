@@ -1,0 +1,111 @@
+generated: '2026-09-04'
+method: probed
+source: live HTTP probes of every host this record knows, 2026-09-04
+note: >-
+  Every named /.well-known path plus /apis.json, /apis.yml and /llms.txt was probed on all three hosts
+  WOW! Momo controls. NOTHING was found. The two WordPress hosts return the site's own 404 page for
+  every path, including a negative-control path that cannot exist. api.wowmomo.com returns HTTP 200 for
+  every path — but the body is always the identical
+  {"data":null,"message":"NO_AUTH","messageType":"FAILED"} auth gate, and the negative-control path
+  returns exactly the same, so those 200s are a blanket gate response and NOT documents. No WellKnown
+  and no SecurityTxt pointer is emitted, and no agent card was written. robots.txt is saved as evidence
+  only; it declares "User-agent: * / Disallow:" with no Content Signals policy and no AI-crawler rule,
+  so asserting a consent signal the provider does not publish would over-credit it.
+negative_control:
+  path: /.well-known/wow-momo-negative-control-9f2c41d7
+  result: >-
+    404 on www.wowmomo.com and wowmomo.com (identical to every real path probed); HTTP 200 NO_AUTH on
+    api.wowmomo.com (identical to every real path probed). The control proves neither host distinguishes
+    a served document from an absent one, so no 200 on that host may be read as a hit.
+hosts:
+- host: www.wowmomo.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+    file: wow-momo-robots.txt
+    note: >-
+      Served, and saved here as evidence, but it is not an API discovery document. It allows all agents
+      unconditionally and names only the Yoast sitemap index.
+- host: wowmomo.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /llms.txt
+    status: 404
+  note: The apex 301-redirects to www.wowmomo.com; statuses recorded after the redirect.
+- host: api.wowmomo.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: NO_AUTH gate body, not a document. See negative_control.
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /.well-known/api-catalog
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /.well-known/agent-card.json
+    status: 200
+    note: NO_AUTH gate body, not a document. No agent card was written.
+  - path: /.well-known/agent.json
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /apis.json
+    status: 200
+    note: NO_AUTH gate body, not a document.
+  - path: /llms.txt
+    status: 200
+    note: NO_AUTH gate body, not a document.

@@ -1,0 +1,57 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  https://www.wowmomo.com/wp-json/ route index, live response headers on both hosts, and site-wide
+  searches for a status, changelog or deprecation page on 2026-09-04
+note: >-
+  WOW! Momo publishes no versioning policy, no deprecation policy, no SLA, no changelog and no status
+  page. Each absence below was probed, not assumed. No StatusPage and no Deprecation pointer is emitted.
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  namespaces_declared: 36
+  routes_declared: 396
+  policy_published: false
+  note: >-
+    The version is WordPress core's REST namespace, not a version WOW! Momo sets, announces or supports.
+    It changes when the install is upgraded, on no schedule the public can see. api.wowmomo.com exposes
+    no version at all — its root serves a DhiWise scaffold page and every other path is gated.
+deprecation:
+  policy_published: false
+  sunset_header_observed: false
+  deprecation_header_observed: false
+  rfc8594: false
+  evidence: >-
+    No Sunset or Deprecation header was present on any response observed from www.wowmomo.com or
+    api.wowmomo.com on 2026-09-04, and no deprecation or API-changes page exists on the site (the page
+    collection holds 6 pages in total, none of them a policy page beyond privacy and terms).
+  deprecated_operations: []
+status_page:
+  published: false
+  evidence: >-
+    status.wowmomo.com answers only through a wildcard DNS record (it resolves to 119.18.54.49, the same
+    address a control subdomain that cannot exist resolves to) and the TLS handshake fails for both, so
+    no status host is served. No uptime or incident page is linked from the site, and the site's own
+    6-page sitemap contains no status page.
+sla:
+  published: false
+  note: No availability, latency or support commitment is published for either surface.
+changelog:
+  published: false
+  note: >-
+    No dated changelog exists. The only change signal available to a third party is the `modified`
+    timestamp on individual content objects, which tracks the marketing site rather than the API.
+support:
+  developer_channel: false
+  note: >-
+    The only contact address published anywhere on the site is info@wowmomo.co.in, given on the privacy
+    page as the consumer data-protection contact. There is no developer support channel, forum, mailing
+    list or issue tracker of any kind.
+content_freshness:
+  most_recent_media: '2026-06-15'
+  most_recent_page: '2025-07-30'
+  posts_published: 0
+  note: >-
+    Read from the live collections on 2026-09-04. The install is maintained — media was added in June
+    2026 — but the editorial surface (posts) has never been used, which is why the /blog/ page renders
+    empty and the RSS feed carries no items.

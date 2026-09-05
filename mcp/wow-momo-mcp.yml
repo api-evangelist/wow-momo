@@ -1,0 +1,110 @@
+generated: '2026-09-04'
+method: derived
+status: candidate
+source: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+note: >-
+  Nobody ships an MCP server for this surface. WOW! Momo publishes none, no npm or PyPI package exists
+  (see packages/wow-momo-packages.yml), and a JSON-RPC tools/list POST to api.wowmomo.com/mcp returned the
+  same blanket NO_AUTH gate every other path on that host returns. The tool list below is a CANDIDATE
+  derived from operations that were confirmed to return HTTP 200 anonymously on 2026-09-04; every one
+  binds to a real operationId in the derived contract. It is a design sketch, not a server. Pointer type
+  is X-MCPServerCandidate, never MCPServer.
+adjacent_agent_surfaces:
+- name: WordPress Abilities API
+  namespace: wp-abilities/v1
+  routes:
+  - /wp-abilities/v1/abilities
+  - /wp-abilities/v1/abilities/{name}
+  - /wp-abilities/v1/abilities/{name}/run
+  - /wp-abilities/v1/categories
+  status: declared but gated
+  evidence: >-
+    GET https://www.wowmomo.com/wp-json/wp-abilities/v1/abilities returned HTTP 401 rest_forbidden on
+    2026-09-04.
+  note: >-
+    A registry of named abilities with a /run endpoint. It is present because WordPress core now ships
+    it, not because WOW! Momo enabled it deliberately, and the ability list cannot be enumerated without
+    a credential.
+- name: Header Footer Elementor MCP abilities
+  namespace: hfe/v1
+  routes:
+  - /hfe/v1/mcp-abilities
+  status: declared but gated
+  evidence: >-
+    GET https://www.wowmomo.com/wp-json/hfe/v1/mcp-abilities returned HTTP 403
+    uae_rest_not_allowed on 2026-09-04. A JSON-RPC tools/list POST to the same path returned 404
+    rest_no_route, so it is a plugin-specific GET route, not an MCP transport endpoint.
+  note: >-
+    The only route on the entire estate with "mcp" in its name, and it is a plugin's internal surface
+    that arrived with an Elementor add-on. Recorded because a name match is exactly the kind of thing
+    that gets mistaken for a shipped MCP server.
+tools:
+- name: search_wowmomo_site
+  description: >-
+    Cross-type search over everything published on www.wowmomo.com, returning id, title, url, type and
+    subtype. The cheapest entry point on the surface.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#listSearchResults
+  http: GET /wp/v2/search
+  auth: none
+- name: list_wowmomo_pages
+  description: >-
+    List the pages published on www.wowmomo.com — home, franchise form, events and bulk orders, privacy,
+    terms — with filtering by slug, search term, date and parent.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#listPages
+  http: GET /wp/v2/pages
+  auth: none
+- name: get_wowmomo_page
+  description: Fetch one page by id, optionally with its author embedded.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#getPage
+  http: GET /wp/v2/pages/{id}
+  auth: none
+- name: list_wowmomo_media
+  description: >-
+    List the WOW! Momo media library — brand logos and campaign artwork for WOW! Momo, WOW! China and
+    WOW! Chicken — with source_url, mime type and dimensions.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#listMediaItems
+  http: GET /wp/v2/media
+  auth: none
+- name: get_wowmomo_media_item
+  description: Fetch one media item by id, including every generated size in media_details.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#getMediaItem
+  http: GET /wp/v2/media/{id}
+  auth: none
+- name: list_wowmomo_taxonomies
+  description: List the category and tag vocabularies registered on the site with their term counts.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#listCategories
+  http: GET /wp/v2/categories
+  auth: none
+- name: embed_wowmomo_url
+  description: >-
+    Get the oEmbed 1.0 representation of any www.wowmomo.com URL, for embedding a WOW! Momo page in
+    another surface.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#getOembed
+  http: GET /oembed/1.0/embed
+  auth: none
+- name: get_wowmomo_seo_head
+  description: >-
+    Get the Yoast SEO head for a wowmomo.com URL — canonical, Open Graph, Twitter card and the
+    schema.org JSON-LD graph — as a parsed object.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#getSeoHead
+  http: GET /yoast/v1/get_head
+  auth: none
+- name: describe_wowmomo_api
+  description: >-
+    Read the route table, namespaces and authentication block from the API root, so a client can see the
+    36 namespaces and 396 routes this install declares.
+  source_operation: openapi/_ae-authored/wow-momo-content-api-openapi.yml#getApiIndex
+  http: GET /
+  auth: none
+not_offered:
+  note: >-
+    A reader will expect menu, outlet, nutrition and ordering tools. None can be built. The menu and
+    outlet data live behind restaurants.wowmomo.com (a vendor-operated microsite) and api.wowmomo.com
+    (blanket NO_AUTH gate), and neither exposes a readable contract.

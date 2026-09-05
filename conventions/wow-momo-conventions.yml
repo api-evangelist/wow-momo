@@ -1,0 +1,149 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/_ae-authored/wow-momo-content-api-openapi.yml plus response headers and error bodies observed
+  live on https://www.wowmomo.com/wp-json/wp/v2/pages on 2026-09-04
+note: >-
+  WOW! Momo publishes no API conventions documentation. Everything below was derived from the live
+  contract and from headers observed on the wire; where a convention does not exist, that is recorded as
+  an absence rather than filled in.
+authentication:
+  style: none for reads; HTTP Basic application password or X-WP-Nonce for writes
+  ref: authentication/wow-momo-authentication.yml
+pagination:
+  style: page-number
+  params:
+  - page
+  - per_page
+  - offset
+  defaults:
+    per_page: 10
+  maximum_per_page: 100
+  response_headers:
+  - X-WP-Total
+  - X-WP-TotalPages
+  link_header: RFC 8288 Link header with rel="next" / rel="prev"
+  evidence: >-
+    GET https://www.wowmomo.com/wp-json/wp/v2/pages?per_page=1 returned x-wp-total: 6, x-wp-totalpages: 6
+    and link: <https://www.wowmomo.com/wp-json/wp/v2/pages?per_page=1&page=2>; rel="next", with
+    access-control-expose-headers naming X-WP-Total, X-WP-TotalPages and Link.
+  bounds_enforcement: >-
+    per_page=500 returned HTTP 400 rest_invalid_param with data.details.per_page.code rest_out_of_bounds
+    and the message "per_page must be between 1 (inclusive) and 100 (inclusive)". The bound is enforced
+    and explained in the error body.
+filtering:
+  params:
+  - search
+  - search_columns
+  - search_semantics
+  - after
+  - before
+  - modified_after
+  - modified_before
+  - include
+  - exclude
+  - slug
+  - status
+  - parent
+  - menu_order
+  - order
+  - orderby
+  - _fields
+  - _embed
+  sparse_fieldsets: _fields — comma-separated allowlist of response properties
+  expansion: _embed — inlines linked resources under _embedded
+  note: >-
+    `_fields` and `_embed` are WordPress core global parameters and are NOT declared in this host's
+    route-discovery document; both were confirmed by live request on 2026-09-04
+    (?_fields=id,slug,link returned exactly those three keys; ?_embed=1 returned _embedded with author).
+    Every other parameter listed here is declared verbatim in the contract.
+hypermedia:
+  style: 'HAL-flavoured _links on every resource, plus a `curies` block naming the wp: prefix'
+  note: Each response object carries _links.self, _links.collection and _links.about.
+metadata:
+  supported: true
+  field: meta
+  note: Per-object arbitrary metadata, registered per post type.
+request_tracing:
+  supported: false
+  note: >-
+    No request-id, trace-id or correlation header is returned on any observed response from either host.
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  note: >-
+    The version lives in the route namespace (/wp-json/wp/v2/...). It is WordPress core's version, not a
+    version WOW! Momo sets or publishes a policy for.
+  ref: lifecycle/wow-momo-lifecycle.yml
+error_envelope:
+  format: wordpress-rest
+  media_type: application/json
+  shape:
+    code: string
+    message: string
+    data:
+      status: integer
+      params: object
+      details: object
+  rfc9457: false
+  note: >-
+    Not RFC 9457 application/problem+json. Observed verbatim on 2026-09-04:
+    {"code":"rest_post_invalid_id","message":"Invalid post ID.","data":{"status":404}}.
+  ref: errors/wow-momo-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header was returned on any observed response, and no
+    limit is documented anywhere.
+  ref: rate-limits/wow-momo-rate-limits.yml
+caching:
+  headers_observed:
+  - 'x-robots-tag: noindex'
+  - 'x-content-type-options: nosniff'
+  - 'vary: Origin,Accept-Encoding'
+  - 'server: Apache'
+  conditional_requests: >-
+    No ETag, Last-Modified or Cache-Control header was returned on the collection responses observed, so
+    conditional requests are not supported on this surface.
+  note: The API responses are explicitly marked noindex.
+cors:
+  allow_headers:
+  - Authorization
+  - X-WP-Nonce
+  - Content-Disposition
+  - Content-MD5
+  - Content-Type
+  expose_headers:
+  - X-WP-Total
+  - X-WP-TotalPages
+  - Link
+  note: >-
+    api.wowmomo.com returns access-control-allow-origin: * on its gate response; the content host does
+    not return an allow-origin header to an anonymous cross-origin-less request.
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  note: >-
+    No idempotency contract exists on either surface. WordPress core ships no Idempotency-Key header,
+    none of the 20 derived operations declares one, and nothing in the live route-discovery document
+    names a replay-protection parameter. api.wowmomo.com documents nothing at all. The honest answer to
+    "can an agent safely retry a write here" is no.
+reversibility:
+  grade: na
+  note: >-
+    The public surface catalogued here is read-only. Every operation in the derived contract is a GET;
+    the write methods that exist on the same WordPress routes require an application password or an
+    editor session, neither of which a third party can obtain, and api.wowmomo.com is entirely gated. No
+    reversal operation is reachable, and WOW! Momo publishes no reversal window, retention period or
+    policy anywhere — so no window is asserted here.
+  surfaces: []
+dry_run_mode:
+  supported: false
+  note: No dry-run, preview or validate-only parameter exists on either surface.
+bulk:
+  supported: false
+  note: >-
+    /wp-json/batch/v1 returned HTTP 404 on this install, so WordPress core's batch endpoint is not
+    available. No other bulk or transactional operation exists.

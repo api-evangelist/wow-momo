@@ -64,5 +64,29 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-WOW! Momo is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+WOW! Momo Foods Private Limited is a Kolkata, India quick-service restaurant company founded in August
+2008 by Sagar J. Daryani and Binod K. Homagai, operating the WOW! Momo, WOW! China and WOW! Chicken
+brands across roughly 650 outlets in more than 30 Indian cities.
+
+**WOW! Momo runs no developer programme.** It publishes no API documentation, developer portal, SDK, API
+pricing or developer support channel, and no company-authored OpenAPI, AsyncAPI or GraphQL contract
+exists anywhere public. This profile exists because two machine surfaces are reachable from the public
+internet:
+
+- **[WOW! Momo Content API](https://www.wowmomo.com/wp-json/)** — the live WordPress REST API behind
+  www.wowmomo.com, advertised in the head of every page as `<link rel="https://api.w.org/">`. Twenty
+  operations answer anonymously with no credential: 6 pages, 98 media items, 5 categories, 15 tags, one
+  author, the post-type / taxonomy / status registries, a cross-type search index of 7 objects, an oEmbed
+  1.0 provider endpoint and the Yoast SEO head document. The OpenAPI in
+  [`openapi/_ae-authored/`](openapi/_ae-authored/) was derived by API Evangelist from the server's own
+  route index and per-route HTTP `OPTIONS` schema documents on 2026-09-04 — every path, parameter and
+  property was read from the provider's responses; nothing is invented.
+- **[WOW! Momo App Backend](https://api.wowmomo.com/)** — the backend of the Wow Eats consumer ordering
+  app. Not callable. Every path probed anonymously, including a control path that cannot exist, returned
+  HTTP **200** with the identical body `{"data":null,"message":"NO_AUTH","messageType":"FAILED"}`. Note
+  the status: an auth failure here looks like a success to any client that branches on the status code.
+
+There is no menu, outlet, nutrition, pricing or ordering data on any WOW! Momo host. The outlet locator
+at restaurants.wowmomo.com is a vendor-operated microsite, not a WOW! Momo API.
+
+- Website: https://www.wowmomo.com/

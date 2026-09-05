@@ -1,0 +1,195 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/_ae-authored/wow-momo-content-api-openapi.yml, itself derived from the live
+  https://www.wowmomo.com/wp-json/ route index and per-route HTTP OPTIONS schema documents (2026-09-04)
+note: >-
+  The entity graph of the WordPress content surface behind www.wowmomo.com. Relationships are read from
+  id-reference fields declared in the server's own OPTIONS schema documents and from the _links / curies
+  block on live responses. This is a small install: 6 pages, 98 media items, 5 categories, 15 tags, one
+  author, zero posts.
+entities:
+- name: Page
+  operations:
+  - listPages
+  - getPage
+  identifier: id (integer)
+  key_fields:
+  - id
+  - slug
+  - link
+  - title.rendered
+  - content.rendered
+  - excerpt.rendered
+  - status
+  - parent
+  - menu_order
+  - template
+  - featured_media
+  - author
+  - date
+  - modified
+  count_at_capture: 6
+  note: >-
+    The whole public site: the home page, the franchise form, events and bulk orders, privacy, terms and
+    a legacy /blog/ page. Content is Elementor-built, so content.rendered is heavy markup rather than
+    prose.
+- name: MediaItem
+  operations:
+  - listMediaItems
+  - getMediaItem
+  identifier: id (integer)
+  key_fields:
+  - id
+  - slug
+  - source_url
+  - mime_type
+  - media_type
+  - media_details
+  - alt_text
+  - caption.rendered
+  - post
+  - author
+  count_at_capture: 98
+  note: Campaign artwork and brand logos for WOW! Momo, WOW! China and WOW! Chicken.
+- name: Category
+  operations:
+  - listCategories
+  - getCategory
+  identifier: id (integer)
+  key_fields:
+  - id
+  - slug
+  - name
+  - description
+  - count
+  - parent
+  - taxonomy
+  count_at_capture: 5
+- name: Tag
+  operations:
+  - listTags
+  - getTag
+  identifier: id (integer)
+  key_fields:
+  - id
+  - slug
+  - name
+  - description
+  - count
+  - taxonomy
+  count_at_capture: 15
+- name: Author
+  operations:
+  - listAuthors
+  - getAuthor
+  identifier: id (integer)
+  key_fields:
+  - id
+  - name
+  - slug
+  - link
+  - avatar_urls
+  count_at_capture: 1
+  note: A single shared editorial account, `webadmin`. It is not a person's identity.
+- name: PostType
+  operations:
+  - listPostTypes
+  - getPostType
+  identifier: slug (string)
+  key_fields:
+  - slug
+  - name
+  - hierarchical
+  - rest_base
+  - rest_namespace
+  - taxonomies
+  - supports
+  note: The registry that says which content collections exist and at which route each is served.
+- name: Taxonomy
+  operations:
+  - listTaxonomies
+  - getTaxonomy
+  identifier: slug (string)
+  key_fields:
+  - slug
+  - name
+  - types
+  - hierarchical
+  - rest_base
+  - rest_namespace
+- name: Status
+  operations:
+  - listStatuses
+  - getStatus
+  identifier: slug (string)
+  key_fields:
+  - slug
+  - name
+  - public
+  - queryable
+- name: SearchResult
+  operations:
+  - listSearchResults
+  identifier: id (integer)
+  key_fields:
+  - id
+  - title
+  - url
+  - type
+  - subtype
+  count_at_capture: 7
+  note: >-
+    A lightweight projection across every public post type. It is the only operation that crosses type
+    boundaries, and the cheapest entry point on the surface.
+relationships:
+- from: Page
+  to: Author
+  type: belongs_to
+  via: author
+  note: Integer author id; resolvable with ?_embed=1, confirmed live.
+- from: Page
+  to: MediaItem
+  type: belongs_to
+  via: featured_media
+  note: Integer media id; 0 means none.
+- from: Page
+  to: Page
+  type: belongs_to
+  via: parent
+  note: Pages are hierarchical on this install (types/page declares hierarchical true).
+- from: MediaItem
+  to: Page
+  type: belongs_to
+  via: post
+  note: The object the attachment was uploaded to; may be null.
+- from: MediaItem
+  to: Author
+  type: belongs_to
+  via: author
+- from: Category
+  to: Category
+  type: belongs_to
+  via: parent
+  note: The category taxonomy is hierarchical; the tag taxonomy is not.
+- from: PostType
+  to: Taxonomy
+  type: has_many
+  via: taxonomies
+- from: Taxonomy
+  to: PostType
+  type: has_many
+  via: types
+- from: SearchResult
+  to: Page
+  type: has_one
+  via: id + subtype
+  note: >-
+    Resolve a result by fetching the collection named by its subtype (page, elementor_library) with the
+    returned id.
+absent:
+  note: >-
+    There is no menu, store, outlet, product, nutrition or order entity anywhere on this surface. The
+    store locator lives on a vendor-operated microsite (restaurants.wowmomo.com) and the ordering domain
+    lives behind the api.wowmomo.com NO_AUTH gate, so neither contributes an entity here. A reader
+    looking for WOW! Momo's menu or outlet data will not find it in this graph.

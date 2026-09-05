@@ -1,23 +1,185 @@
 aid: wow-momo
 name: WOW! Momo
-description: 'WOW! Momo is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  WOW! Momo Foods Private Limited is the Kolkata, India quick-service restaurant company founded in
+  August 2008 by St. Xavier's College alumni Sagar J. Daryani and Binod K. Homagai, which built a
+  national chain around the momo and now operates three brands — WOW! Momo, WOW! China and WOW!
+  Chicken (launched December 2021) — across roughly 650 outlets in more than 30 Indian cities, backed
+  by Lighthouse Funds, Tiger Global, Khazanah Nasional and Oaks Capital. WOW! Momo runs no developer
+  programme: it publishes no API documentation, developer portal, SDK, API pricing or support channel,
+  and no company-authored OpenAPI, AsyncAPI or GraphQL contract exists anywhere public. It is
+  catalogued here because www.wowmomo.com serves a live, anonymously readable WordPress REST API —
+  advertised in the head of every page as <link rel="https://api.w.org/"> — exposing the site's pages,
+  media library, taxonomies, search index, oEmbed 1.0 provider endpoint and Yoast SEO head document,
+  alongside a separate first-party application backend on api.wowmomo.com that answers every anonymous
+  request, including a control path that cannot exist, with an identical NO_AUTH body.
+image: https://www.wowmomo.com/wp-content/uploads/2022/03/Wow-Momo-Logo.png
 url: https://raw.githubusercontent.com/api-evangelist/wow-momo/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: enriched
+x-tier-reason: enrichment pass 2026-09-04
+x-api-posture: no-product-api
+x-api-posture-basis: observed
+x-api-posture-note: >-
+  WOW! Momo publishes no developer portal, API reference, SDK, API pricing or developer support
+  channel. Every machine-readable surface catalogued here is infrastructure of its marketing site or
+  its consumer ordering app, not a commercial API product.
+x-operator: >-
+  restaurants.wowmomo.com is a store-locator microsite served by a third-party location-marketing SaaS
+  platform (its assets load from /VendorpageTheme/Enterprise/... and /files/public/261129/), operating
+  under the WOW! Momo brand rather than from WOW! Momo's own stack, so it is not registered as a WOW!
+  Momo API. The Wow Eats consumer ordering app (com.wowmomo.woweats) was built for WOW! Momo by
+  BlueHorse Software; its backend answers on api.wowmomo.com, which is a WOW! Momo domain.
 specificationVersion: '0.20'
 created: '2026-09-04'
 modified: '2026-09-04'
 tags:
 - Company
-apis: []
+- Restaurants
+- Food and Beverage
+- Quick Service Restaurant
+- Retail
+- Hospitality
+- Consumer
+- Franchising
+- Content
+- WordPress
+- oEmbed
+- India
+- Kolkata
+apis:
+- aid: wow-momo:wow-momo-content-api
+  name: WOW! Momo Content API
+  description: >-
+    The live WordPress REST API served by www.wowmomo.com, advertised in the head of every page as
+    <link rel="https://api.w.org/">. Its route-discovery document declares 396 routes across 36
+    namespaces; the core wp/v2 content collections read anonymously with no credential at all — pages
+    (6 published), media (98 items), categories (5), tags (15), the author record, the post-type,
+    taxonomy and status registries, and the site search index (7 objects, 0 posts). The oEmbed 1.0
+    provider endpoint and the Yoast SEO head document also answer anonymously. Settings, menus,
+    plugins, themes, block types, abilities and the Contact Form 7 namespace all return 401 or 403.
+  image: https://www.wowmomo.com/wp-content/uploads/2022/03/Wow-Momo-Logo.png
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Content
+  - WordPress
+  - oEmbed
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+  - type: Overlay
+    url: overlays/wow-momo-content-api-overlay.yaml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-app-backend
+  name: WOW! Momo App Backend
+  description: >-
+    A first-party application backend on api.wowmomo.com behind an AWS Application Load Balancer,
+    running an Express service scaffolded with DhiWise (its root serves a "welcome to node.js" page
+    carrying the DhiWise logo, with a commented-out link to /swagger). It serves the Wow Eats consumer
+    ordering app. Every path probed anonymously on 2026-09-04 — including /openapi.json, /swagger,
+    /graphql, /mcp and a control path that cannot exist — returned an identical HTTP 200 body
+    {"data":null,"message":"NO_AUTH","messageType":"FAILED"}, so no contract, path list or
+    documentation is observable without a credential. Only GET /health answers, with "OK".
+  image: https://www.wowmomo.com/wp-content/uploads/2022/03/Wow-Momo-Logo.png
+  humanURL: https://api.wowmomo.com/
+  baseURL: https://api.wowmomo.com
+  tags:
+  - Ordering
+  - Mobile
+  - Gated
+  properties:
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/wow-momo-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.wowmomo.com/
+- type: TermsOfService
+  url: https://www.wowmomo.com/terms-conditions/
+- type: PrivacyPolicy
+  url: https://www.wowmomo.com/privacy/
+- type: Franchise
+  url: https://www.wowmomo.com/franchise-form/
+- type: StoreLocator
+  url: https://restaurants.wowmomo.com/
+- type: BlogRSS
+  url: https://www.wowmomo.com/feed/
+- type: LinkedIn
+  url: https://in.linkedin.com/company/wow-momo
+- type: OpenAPI
+  url: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+- type: Overlay
+  url: overlays/wow-momo-content-api-overlay.yaml
+- type: LLMsTxt
+  url: llms/wow-momo-llms.txt
+- type: X-MCPServerCandidate
+  url: mcp/wow-momo-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Authentication
+  url: authentication/wow-momo-authentication.yml
+- type: Conventions
+  url: conventions/wow-momo-conventions.yml
+- type: ErrorCatalog
+  url: errors/wow-momo-problem-types.yml
+- type: DataModel
+  url: data-model/wow-momo-data-model.yml
+- type: Lifecycle
+  url: lifecycle/wow-momo-lifecycle.yml
+- type: Conformance
+  url: conformance/wow-momo-conformance.yml
+- type: Packages
+  url: packages/wow-momo-packages.yml
+- type: Plans
+  url: plans/wow-momo-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/wow-momo-rate-limits.yml
+x-enrichment:
+  date: '2026-09-04'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3
+x-enrichment-notes: >-
+  Deliberately absent, each a verified negative probed on 2026-09-04. WellKnown and SecurityTxt: every
+  named /.well-known path plus /apis.json, /apis.yml and /llms.txt returned 404 on www.wowmomo.com and
+  wowmomo.com; api.wowmomo.com returned HTTP 200 for all of them, but a negative-control path that cannot
+  exist returned the identical NO_AUTH body, so none of those 200s is a document. The probe is recorded
+  in well-known/wow-momo-well-known.yml with NO pointer. AgentCard: /.well-known/agent-card.json and
+  /.well-known/agent.json miss on every host, so nothing was written. MCPServer: no server exists
+  anywhere; the derived tool list carries X-MCPServerCandidate, never MCPServer. The install does declare
+  two MCP-adjacent routes — wp-abilities/v1 (401) and hfe/v1/mcp-abilities (403) — and both arrived with
+  WordPress core and an Elementor plugin, not with any WOW! Momo decision. SDKs and CLI: nothing on npm,
+  PyPI or any registry, and no WOW! Momo GitHub organisation exists, so no SDKs pointer is emitted.
+  Idempotency: no replay-protection contract exists on either surface, so no Idempotency pointer is
+  emitted. StatusPage and Deprecation: no status host is served (status.wowmomo.com answers only through
+  a wildcard DNS record and fails TLS, exactly as a control subdomain does) and no deprecation policy or
+  RFC 8594 header exists, so Lifecycle carries neither companion pointer. Security, VulnerabilityDisclosure,
+  TrustCenter and Compliance: no security.txt, no disclosure policy, no bug bounty and no certification
+  or trust page — probe-security-programs.py returned vdp=none trust=none, so nothing was written.
+  AsyncAPI and Webhooks: /asyncapi.yaml, /asyncapi.json, /events and /webhooks all miss on both hosts.
+  Protobuf and WSDL: ?wsdl and ?singleWsdl miss on both hosts. Sandbox, Changelog, Components,
+  DeclineCodes, OAuthScopes, Postman and Roadmap: none published. DeveloperPortal, Documentation,
+  APIReference, GettingStarted and Support: WOW! Momo runs no developer programme at all, so none of
+  these pages exists to point at — the only contact address published anywhere on the site is
+  info@wowmomo.co.in, on the privacy page. The harvest stub's original Website pointer was
+  https://www.nasdaqprivatemarket.com/, the secondary-market venue rather than the company; it has been
+  replaced with https://www.wowmomo.com/ and no venue pointer is emitted, because the venue publishes no
+  WOW! Momo-specific page. ContentSignal: well-known/wow-momo-robots.txt is saved as evidence but carries
+  NO pointer — it declares "User-agent: * / Disallow:" with no Content Signals policy and no AI-crawler
+  rule.

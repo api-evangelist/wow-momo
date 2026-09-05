@@ -1,0 +1,29 @@
+generated: '2026-09-04'
+method: generated
+source: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+note: >-
+  WOW! Momo publishes no AGENTS.md and no skill files; these are generated from the derived contract.
+  Every operationId referenced was taken from that file, and every operation used was confirmed to return
+  HTTP 200 anonymously on 2026-09-04.
+skills:
+- file: wow-momo-read-the-site.md
+  name: Read the WOW! Momo site through its API
+  api: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+  operations:
+  - listSearchResults
+  - listPages
+  - getPage
+  - getApiIndex
+- file: wow-momo-pull-brand-assets.md
+  name: Pull WOW! Momo brand and campaign imagery
+  api: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+  operations:
+  - listMediaItems
+  - getMediaItem
+- file: wow-momo-embed-and-describe.md
+  name: Embed a WOW! Momo page and read its SEO graph
+  api: openapi/_ae-authored/wow-momo-content-api-openapi.yml
+  operations:
+  - getOembed
+  - getSeoHead
+  - listPages
