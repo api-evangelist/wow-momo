@@ -1,0 +1,14 @@
+{
+  "repo": "wow-momo",
+  "feeds": [
+    {
+      "source": "https://restaurants.wowmomo.com/",
+      "feed_url": "https://restaurants.wowmomo.com/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-06T19:17:18Z"
+}
