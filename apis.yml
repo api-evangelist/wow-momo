@@ -36,6 +36,20 @@ created: '2026-09-04'
 modified: '2026-09-04'
 tags:
 - Company
+- Restaurant
+- Food and Beverage
+- Quick Service Restaurant
+- Retail
+- Hospitality
+- Consumer
+- Franchising
+- Content
+- WordPress
+- oEmbed
+- India
+- Kolkata
+tags_raw:
+- Company
 - Restaurants
 - Food and Beverage
 - Quick Service Restaurant
@@ -49,47 +63,16 @@ tags:
 - India
 - Kolkata
 apis:
-- aid: wow-momo:wow-momo-content-api
-  name: WOW! Momo Content API
-  description: >-
-    The live WordPress REST API served by www.wowmomo.com, advertised in the head of every page as
-    <link rel="https://api.w.org/">. Its route-discovery document declares 396 routes across 36
-    namespaces; the core wp/v2 content collections read anonymously with no credential at all — pages
-    (6 published), media (98 items), categories (5), tags (15), the author record, the post-type,
-    taxonomy and status registries, and the site search index (7 objects, 0 posts). The oEmbed 1.0
-    provider endpoint and the Yoast SEO head document also answer anonymously. Settings, menus,
-    plugins, themes, block types, abilities and the Contact Form 7 namespace all return 401 or 403.
-  image: https://www.wowmomo.com/wp-content/uploads/2022/03/Wow-Momo-Logo.png
-  humanURL: https://www.wowmomo.com/wp-json/
-  baseURL: https://www.wowmomo.com/wp-json
-  tags:
-  - Content
-  - WordPress
-  - oEmbed
-  - Search
-  properties:
-  - type: OpenAPI
-    url: openapi/_ae-authored/wow-momo-content-api-openapi.yml
-  - type: Overlay
-    url: overlays/wow-momo-content-api-overlay.yaml
-  - type: Authentication
-    url: authentication/wow-momo-authentication.yml
-  - type: Conventions
-    url: conventions/wow-momo-conventions.yml
-  - type: ErrorCatalog
-    url: errors/wow-momo-problem-types.yml
-  - type: DataModel
-    url: data-model/wow-momo-data-model.yml
 - aid: wow-momo:wow-momo-app-backend
   name: WOW! Momo App Backend
   description: >-
-    A first-party application backend on api.wowmomo.com behind an AWS Application Load Balancer,
-    running an Express service scaffolded with DhiWise (its root serves a "welcome to node.js" page
-    carrying the DhiWise logo, with a commented-out link to /swagger). It serves the Wow Eats consumer
-    ordering app. Every path probed anonymously on 2026-09-04 — including /openapi.json, /swagger,
-    /graphql, /mcp and a control path that cannot exist — returned an identical HTTP 200 body
-    {"data":null,"message":"NO_AUTH","messageType":"FAILED"}, so no contract, path list or
-    documentation is observable without a credential. Only GET /health answers, with "OK".
+    A first-party application backend on api.wowmomo.com behind an AWS Application Load Balancer, running
+    an Express service scaffolded with DhiWise (its root serves a "welcome to node.js" page carrying the
+    DhiWise logo, with a commented-out link to /swagger). It serves the Wow Eats consumer ordering app.
+    Every path probed anonymously on 2026-09-04 — including /openapi.json, /swagger, /graphql, /mcp and
+    a control path that cannot exist — returned an identical HTTP 200 body {"data":null,"message":"NO_AUTH","messageType":"FAILED"},
+    so no contract, path list or documentation is observable without a credential. Only GET /health answers,
+    with "OK".
   image: https://www.wowmomo.com/wp-content/uploads/2022/03/Wow-Momo-Logo.png
   humanURL: https://api.wowmomo.com/
   baseURL: https://api.wowmomo.com
@@ -100,6 +83,206 @@ apis:
   properties:
   - type: Authentication
     url: authentication/wow-momo-authentication.yml
+- aid: wow-momo:wow-momo-authors-api
+  name: WOW! Momo Authors API
+  description: Public author records for content published on the site.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Authors
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-authors-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-categories-api
+  name: WOW! Momo Categories API
+  description: The `category` taxonomy terms registered on the site.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Categories
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-categories-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-discovery-api
+  name: WOW! Momo Discovery API
+  description: The API root document and the oEmbed provider endpoint.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-media-api
+  name: WOW! Momo Media API
+  description: >-
+    The WOW! Momo media library — logos, campaign artwork and photography attached to the site.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Media
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-pages-api
+  name: WOW! Momo Pages API
+  description: The marketing and policy pages published on www.wowmomo.com.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Pages
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-pages-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-search-api
+  name: WOW! Momo Search API
+  description: Cross-type search over everything published on www.wowmomo.com.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-seo-api
+  name: WOW! Momo SEO API
+  description: >-
+    The Yoast SEO head document for any wowmomo.com URL, including its schema.org JSON-LD graph.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - SEO
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-seo-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-statuses-api
+  name: WOW! Momo Statuses API
+  description: The publication statuses registered on the install.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Statuses
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-statuses-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-tags-api
+  name: WOW! Momo Tags API
+  description: The `post_tag` taxonomy terms registered on the site.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-tags-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-taxonomies-api
+  name: WOW! Momo Taxonomies API
+  description: The taxonomies registered on the install and the routes that serve them.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Taxonomies
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-taxonomies-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
+- aid: wow-momo:wow-momo-types-api
+  name: WOW! Momo Types API
+  description: The post types registered on the install and the routes that serve them.
+  humanURL: https://www.wowmomo.com/wp-json/
+  baseURL: https://www.wowmomo.com/wp-json
+  tags:
+  - Types
+  properties:
+  - type: OpenAPI
+    url: openapi/wow-momo-types-api-openapi.yml
+  - type: Authentication
+    url: authentication/wow-momo-authentication.yml
+  - type: Conventions
+    url: conventions/wow-momo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/wow-momo-problem-types.yml
+  - type: DataModel
+    url: data-model/wow-momo-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
