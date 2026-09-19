@@ -217,6 +217,8 @@ apis:
   humanURL: https://www.wowmomo.com/wp-json/
   baseURL: https://www.wowmomo.com/wp-json
   tags:
+  - Status
+  tags_raw:
   - Statuses
   properties:
   - type: OpenAPI
@@ -253,6 +255,8 @@ apis:
   humanURL: https://www.wowmomo.com/wp-json/
   baseURL: https://www.wowmomo.com/wp-json
   tags:
+  - taxonomies
+  tags_raw:
   - Taxonomies
   properties:
   - type: OpenAPI
