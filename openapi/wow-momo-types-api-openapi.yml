@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: WOW! Momo Content Types API
+  version: wp/v2
+  description: Public, unauthenticated read access to the content behind www.wowmomo.com via the WordPress core REST API — the marketing and policy pages, the media library, the category and tag vocabularies, the author record, the post-type/taxonomy/status registries, the site search index and the oEmbed provider endpoint.
+  contact:
+    name: WOW! Momo Foods
+    url: https://www.wowmomo.com/
+  x-derived-from: https://www.wowmomo.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-09-04'
+  x-api-evangelist-note: Third-party profile. Every path, parameter and schema property here was read from the server's own published route index and OPTIONS documents on 2026-09-04 — nothing is invented. This is not a contract WOW! Momo publishes or supports.
+servers:
+- url: https://www.wowmomo.com/wp-json
+  description: WOW! Momo WordPress REST API
+tags:
+- name: Types
+  description: The post types registered on the install and the routes that serve them.
+paths:
+  /wp/v2/types:
+    get:
+      operationId: listPostTypes
+      summary: List types
+      description: Retrieve every post type registered on the install, keyed by slug.
+      tags:
+      - Types
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: A collection of types.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/PostType'
+                description: An object keyed by slug.
+        '400':
+          $ref: '#/components/responses/WordPressError'
+  /wp/v2/types/{type}:
+    get:
+      operationId: getPostType
+      summary: Get a single post type
+      description: Retrieve one post type by its identifier.
+      tags:
+      - Types
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: An alphanumeric identifier for the post type.
+        schema:
+          type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: The requested post type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostType'
+        '404':
+          $ref: '#/components/responses/WordPressError'
+components:
+  schemas:
+    PostType:
+      type: object
+      properties:
+        capabilities:
+          description: All capabilities used by the post type.
+          type: object
+          additionalProperties: true
+        description:
+          description: A human-readable description of the post type.
+          type: string
+        hierarchical:
+          description: Whether or not the post type should have children.
+          type: boolean
+        viewable:
+          description: Whether or not the post type can be viewed.
+          type: boolean
+        labels:
+          description: Human-readable labels for the post type for various contexts.
+          type: object
+          additionalProperties: true
+        name:
+          description: The title for the post type.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the post type.
+          type: string
+        supports:
+          description: All features, supported by the post type.
+          type: object
+          additionalProperties: true
+        has_archive:
+          description: If the value is a string, the value will be used as the archive slug. If the value is false the post type has no archive.
+          type:
+          - string
+          - boolean
+        taxonomies:
+          description: Taxonomies associated with post type.
+          type: array
+          items:
+            type: string
+        rest_base:
+          description: REST base route for the post type.
+          type: string
+        rest_namespace:
+          description: REST route's namespace for the post type.
+          type: string
+        visibility:
+          description: The visibility settings for the post type.
+          type: object
+          properties:
+            show_ui:
+              description: Whether to generate a default UI for managing this post type.
+              type: boolean
+            show_in_nav_menus:
+              description: Whether to make the post type available for selection in navigation menus.
+              type: boolean
+        icon:
+          description: The icon for the post type.
+          type:
+          - string
+          - 'null'
+        template:
+          type:
+          - array
+          description: The block template associated with the post type.
+        template_lock:
+          type:
+          - string
+          - boolean
+          enum:
+          - all
+          - insert
+          - contentOnly
+          - false
+          description: The template_lock associated with the post type, or false if none.
+      description: A post type as returned by the WordPress REST API on www.wowmomo.com.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope. It is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          description: Error data. Carries the HTTP status under `status`.
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+          additionalProperties: true
+  responses:
+    WordPressError:
+      description: A WordPress REST API error envelope (code / message / data.status).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,0 +1,352 @@
+openapi: 3.2.0
+info:
+  title: WOW! Momo Content Authors API
+  version: wp/v2
+  description: Public, unauthenticated read access to the content behind www.wowmomo.com via the WordPress core REST API — the marketing and policy pages, the media library, the category and tag vocabularies, the author record, the post-type/taxonomy/status registries, the site search index and the oEmbed provider endpoint.
+  contact:
+    name: WOW! Momo Foods
+    url: https://www.wowmomo.com/
+  x-derived-from: https://www.wowmomo.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-09-04'
+  x-api-evangelist-note: Third-party profile. Every path, parameter and schema property here was read from the server's own published route index and OPTIONS documents on 2026-09-04 — nothing is invented. This is not a contract WOW! Momo publishes or supports.
+servers:
+- url: https://www.wowmomo.com/wp-json
+  description: WOW! Momo WordPress REST API
+tags:
+- name: Authors
+  description: Public author records for content published on the site.
+paths:
+  /wp/v2/users:
+    get:
+      operationId: listAuthors
+      summary: List authors
+      description: Retrieve the public author records on the site. One author at capture.
+      tags:
+      - Authors
+      parameters:
+      - name: capabilities
+        in: query
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list or single capability.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: exclude
+        in: query
+        description: Ensure result set excludes specific IDs.
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: has_published_posts
+        in: query
+        description: Limit result set to users who have published posts.
+        schema:
+          type:
+          - boolean
+          - array
+          items:
+            type: string
+            enum:
+              post: post
+              page: page
+              attachment: attachment
+              nav_menu_item: nav_menu_item
+              wp_block: wp_block
+              wp_template: wp_template
+              wp_template_part: wp_template_part
+              wp_global_styles: wp_global_styles
+              wp_navigation: wp_navigation
+              wp_font_family: wp_font_family
+              wp_font_face: wp_font_face
+              elementor_library: elementor_library
+      - name: include
+        in: query
+        description: Limit result set to specific IDs.
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+      - name: offset
+        in: query
+        description: Offset the result set by a specific number of items.
+        schema:
+          type: integer
+      - name: order
+        in: query
+        description: Order sort attribute ascending or descending.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - name: orderby
+        in: query
+        description: Sort collection by user attribute.
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+          default: name
+      - name: page
+        in: query
+        description: Current page of the collection.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: Maximum number of items to be returned in result set.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: roles
+        in: query
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or single role.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: search
+        in: query
+        description: Limit results to those matching a string.
+        schema:
+          type: string
+      - name: search_columns
+        in: query
+        description: Array of column names to be searched.
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - email
+            - name
+            - id
+            - username
+            - slug
+            type: string
+      - name: slug
+        in: query
+        description: Limit result set to users with one or more specific slugs.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: who
+        in: query
+        description: Limit result set to users who are considered authors.
+        schema:
+          type: string
+          enum:
+          - authors
+      responses:
+        '200':
+          description: A collection of authors.
+          headers:
+            X-WP-Total:
+              description: Total number of matching records.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page size.
+              schema:
+                type: integer
+            Allow:
+              description: Methods available to the caller. Anonymous callers observe `GET`.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        '400':
+          $ref: '#/components/responses/WordPressError'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getAuthor
+      summary: Get a single author
+      description: Retrieve one author by its identifier.
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique identifier for the user.
+        schema:
+          type: integer
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: The requested author.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          $ref: '#/components/responses/WordPressError'
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the user.
+          type: integer
+        username:
+          description: Login name for the user.
+          type: string
+        name:
+          description: Display name for the user.
+          type: string
+        first_name:
+          description: First name for the user.
+          type: string
+        last_name:
+          description: Last name for the user.
+          type: string
+        email:
+          description: The email address for the user.
+          type: string
+          format: email
+        url:
+          description: URL of the user.
+          type: string
+          format: uri
+        description:
+          description: Description of the user.
+          type: string
+        link:
+          description: Author URL of the user.
+          type: string
+          format: uri
+        locale:
+          description: Locale for the user.
+          type: string
+          enum:
+          - ''
+          - en_US
+        nickname:
+          description: The nickname for the user.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the user.
+          type: string
+        registered_date:
+          description: Registration date for the user.
+          type: string
+          format: date-time
+        roles:
+          description: Roles assigned to the user.
+          type: array
+          items:
+            type: string
+        password:
+          description: Password for the user (never included).
+          type: string
+        capabilities:
+          description: All capabilities assigned to the user.
+          type: object
+          additionalProperties: true
+        extra_capabilities:
+          description: Any extra capabilities assigned to the user.
+          type: object
+          additionalProperties: true
+        avatar_urls:
+          description: Avatar URLs for the user.
+          type: object
+          properties:
+            '24':
+              description: Avatar URL with image size of 24 pixels.
+              type: string
+              format: uri
+            '48':
+              description: Avatar URL with image size of 48 pixels.
+              type: string
+              format: uri
+            '96':
+              description: Avatar URL with image size of 96 pixels.
+              type: string
+              format: uri
+        meta:
+          description: Meta fields.
+          type: object
+          properties:
+            persisted_preferences:
+              type: object
+              title: ''
+              description: ''
+              properties:
+                _modified:
+                  description: The date and time the preferences were updated.
+                  type: string
+                  format: date-time
+              additionalProperties: true
+        elementor_introduction:
+          description: Elementor user meta data
+          type: object
+          properties:
+            ai_get_started:
+              type: boolean
+          additionalProperties: true
+      description: A author as returned by the WordPress REST API on www.wowmomo.com.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope. It is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          description: Error data. Carries the HTTP status under `status`.
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+          additionalProperties: true
+  responses:
+    WordPressError:
+      description: A WordPress REST API error envelope (code / message / data.status).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

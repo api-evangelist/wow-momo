@@ -1,0 +1,173 @@
+openapi: 3.2.0
+info:
+  title: WOW! Momo Content Taxonomies API
+  version: wp/v2
+  description: Public, unauthenticated read access to the content behind www.wowmomo.com via the WordPress core REST API — the marketing and policy pages, the media library, the category and tag vocabularies, the author record, the post-type/taxonomy/status registries, the site search index and the oEmbed provider endpoint.
+  contact:
+    name: WOW! Momo Foods
+    url: https://www.wowmomo.com/
+  x-derived-from: https://www.wowmomo.com/wp-json/ route index + per-route HTTP OPTIONS schema documents
+  x-derived-on: '2026-09-04'
+  x-api-evangelist-note: Third-party profile. Every path, parameter and schema property here was read from the server's own published route index and OPTIONS documents on 2026-09-04 — nothing is invented. This is not a contract WOW! Momo publishes or supports.
+servers:
+- url: https://www.wowmomo.com/wp-json
+  description: WOW! Momo WordPress REST API
+tags:
+- name: Taxonomies
+  description: The taxonomies registered on the install and the routes that serve them.
+paths:
+  /wp/v2/taxonomies:
+    get:
+      operationId: listTaxonomies
+      summary: List taxonomies
+      description: Retrieve every taxonomy registered on the install, keyed by slug.
+      tags:
+      - Taxonomies
+      parameters:
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      - name: type
+        in: query
+        description: Limit results to taxonomies associated with a specific post type.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A collection of taxonomies.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Taxonomy'
+                description: An object keyed by slug.
+        '400':
+          $ref: '#/components/responses/WordPressError'
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      operationId: getTaxonomy
+      summary: Get a single taxonomy
+      description: Retrieve one taxonomy by its identifier.
+      tags:
+      - Taxonomies
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: An alphanumeric identifier for the taxonomy.
+        schema:
+          type: string
+      - name: context
+        in: query
+        description: Scope under which the request is made; determines fields present in response.
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+      responses:
+        '200':
+          description: The requested taxonomy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taxonomy'
+        '404':
+          $ref: '#/components/responses/WordPressError'
+components:
+  schemas:
+    Taxonomy:
+      type: object
+      properties:
+        capabilities:
+          description: All capabilities used by the taxonomy.
+          type: object
+          additionalProperties: true
+        description:
+          description: A human-readable description of the taxonomy.
+          type: string
+        hierarchical:
+          description: Whether or not the taxonomy should have children.
+          type: boolean
+        labels:
+          description: Human-readable labels for the taxonomy for various contexts.
+          type: object
+          additionalProperties: true
+        name:
+          description: The title for the taxonomy.
+          type: string
+        slug:
+          description: An alphanumeric identifier for the taxonomy.
+          type: string
+        show_cloud:
+          description: Whether or not the term cloud should be displayed.
+          type: boolean
+        types:
+          description: Types associated with the taxonomy.
+          type: array
+          items:
+            type: string
+        rest_base:
+          description: REST base route for the taxonomy.
+          type: string
+        rest_namespace:
+          description: REST namespace route for the taxonomy.
+          type: string
+        visibility:
+          description: The visibility settings for the taxonomy.
+          type: object
+          properties:
+            public:
+              description: Whether a taxonomy is intended for use publicly either via the admin interface or by front-end users.
+              type: boolean
+            publicly_queryable:
+              description: Whether the taxonomy is publicly queryable.
+              type: boolean
+            show_ui:
+              description: Whether to generate a default UI for managing this taxonomy.
+              type: boolean
+            show_admin_column:
+              description: Whether to allow automatic creation of taxonomy columns on associated post-types table.
+              type: boolean
+            show_in_nav_menus:
+              description: Whether to make the taxonomy available for selection in navigation menus.
+              type: boolean
+            show_in_quick_edit:
+              description: Whether to show the taxonomy in the quick/bulk edit panel.
+              type: boolean
+      description: A taxonomy as returned by the WordPress REST API on www.wowmomo.com.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope. It is not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          description: Error data. Carries the HTTP status under `status`.
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+          additionalProperties: true
+  responses:
+    WordPressError:
+      description: A WordPress REST API error envelope (code / message / data.status).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

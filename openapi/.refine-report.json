@@ -1,0 +1,40 @@
+{
+  "provider": "wow-momo",
+  "sources": [
+    "_ae-authored/wow-momo-content-api-openapi.yml"
+  ],
+  "outputs": [
+    "wow-momo-authors-api-openapi.yml",
+    "wow-momo-categories-api-openapi.yml",
+    "wow-momo-discovery-api-openapi.yml",
+    "wow-momo-media-api-openapi.yml",
+    "wow-momo-pages-api-openapi.yml",
+    "wow-momo-seo-api-openapi.yml",
+    "wow-momo-search-api-openapi.yml",
+    "wow-momo-statuses-api-openapi.yml",
+    "wow-momo-tags-api-openapi.yml",
+    "wow-momo-taxonomies-api-openapi.yml",
+    "wow-momo-types-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "wow-momo-content-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "wow-momo-authors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-categories-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-seo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-statuses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-taxonomies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wow-momo-types-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
