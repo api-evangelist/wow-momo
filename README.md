@@ -64,29 +64,111 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-WOW! Momo Foods Private Limited is a Kolkata, India quick-service restaurant company founded in August
-2008 by Sagar J. Daryani and Binod K. Homagai, operating the WOW! Momo, WOW! China and WOW! Chicken
-brands across roughly 650 outlets in more than 30 Indian cities.
+WOW! Momo Foods Private Limited is the Kolkata, India quick-service restaurant company founded in August 2008 by St. Xavier's College alumni Sagar J. Daryani and Binod K. Homagai, which built a national chain around the momo and now operates three brands — WOW! Momo, WOW! China and WOW! Chicken (launched December 2021) — across roughly 650 outlets in more than 30 Indian cities, backed by Lighthouse Funds, Tiger Global, Khazanah Nasional and Oaks Capital. WOW! Momo runs no developer programme: it publishes no API documentation, developer portal, SDK, API pricing or support channel, and no company-authored OpenAPI, AsyncAPI or GraphQL contract exists anywhere public. It is catalogued here because www.wowmomo.com serves a live, anonymously readable WordPress REST API — advertised in the head of every page as <link rel="https://api.w.org/"> — exposing the site's pages, media library, taxonomies, search index, oEmbed 1.0 provider endpoint and Yoast SEO head document, alongside a separate first-party application backend on api.wowmomo.com that answers every anonymous request, including a control path that cannot exist, with an identical NO_AUTH body.
 
-**WOW! Momo runs no developer programme.** It publishes no API documentation, developer portal, SDK, API
-pricing or developer support channel, and no company-authored OpenAPI, AsyncAPI or GraphQL contract
-exists anywhere public. This profile exists because two machine surfaces are reachable from the public
-internet:
+**Areas:** Company · Restaurant · Food and Beverage · Quick Service Restaurant · Retail · Hospitality · Consumer · Franchising · Content · WordPress · oEmbed · India
 
-- **[WOW! Momo Content API](https://www.wowmomo.com/wp-json/)** — the live WordPress REST API behind
-  www.wowmomo.com, advertised in the head of every page as `<link rel="https://api.w.org/">`. Twenty
-  operations answer anonymously with no credential: 6 pages, 98 media items, 5 categories, 15 tags, one
-  author, the post-type / taxonomy / status registries, a cross-type search index of 7 objects, an oEmbed
-  1.0 provider endpoint and the Yoast SEO head document. The OpenAPI in
-  [`openapi/_ae-authored/`](openapi/_ae-authored/) was derived by API Evangelist from the server's own
-  route index and per-route HTTP `OPTIONS` schema documents on 2026-09-04 — every path, parameter and
-  property was read from the provider's responses; nothing is invented.
-- **[WOW! Momo App Backend](https://api.wowmomo.com/)** — the backend of the Wow Eats consumer ordering
-  app. Not callable. Every path probed anonymously, including a control path that cannot exist, returned
-  HTTP **200** with the identical body `{"data":null,"message":"NO_AUTH","messageType":"FAILED"}`. Note
-  the status: an auth failure here looks like a success to any client that branches on the status code.
+## WOW! Momo on APIs.io
 
-There is no menu, outlet, nutrition, pricing or ordering data on any WOW! Momo host. The outlet locator
-at restaurants.wowmomo.com is a vendor-operated microsite, not a WOW! Momo API.
+Everything profiled for WOW! Momo is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/wow-momo/](https://apis.io/providers/wow-momo/)** — or go straight to one of the APIs or properties below.
 
-- Website: https://www.wowmomo.com/
+### APIs (2)
+
+- [WOW! Momo App Backend](https://apis.io/apis/wow-momo/wow-momo-app-backend/) — A first-party application backend on api.wowmomo.com behind an AWS Application Load Balancer, running an Express service scaffolded with DhiWise (its root…
+- [WOW! Momo Website (WordPress REST)](https://apis.io/apis/wow-momo/wowmomo-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the WOW! Momo website at www.wowmomo.com: the route index of the site's content management system, catalogued as…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [wow-momo-mcp.yml](https://apis.io/servers/wow-momo/wow-momo-mcp-yml/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Wow Momo Content Api Overlay](https://apis.io/overlays/wow-momo/wow-momo-content-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Wow Momo Authentication](https://apis.io/security/wow-momo/wow-momo-authentication/)
+- [Wow Momo Domain Security](https://apis.io/security/wow-momo/wow-momo-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Wow Momo Plans Pricing](https://apis.io/plans/wow-momo/wow-momo-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Wow Momo Rate Limits](https://apis.io/rate-limits/wow-momo/wow-momo-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.wowmomo.com/)
+- [Terms of service](https://www.wowmomo.com/terms-conditions/)
+- [Privacy policy](https://www.wowmomo.com/privacy/)
+
+## API Evangelist rating
+
+**Kin Score 18.6** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 1.7 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 23.2 |
+| Access clarity | 21.1 |
+
+**Agent readiness 11.7** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/wow-momo/](https://apis.io/providers/wow-momo/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for WOW! Momo: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/wow-momo/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
